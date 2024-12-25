@@ -3,7 +3,6 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,8 @@ public class GomokuGame extends JFrame {
     private boolean gameWon;
     private JLabel statusBar;
     private Stack<Point> moveHistory;
+    private int playerXWins;
+    private int playerOWins;
 
     public GomokuGame() {
         initializeGame();
@@ -27,6 +28,8 @@ public class GomokuGame extends JFrame {
         currentPlayer = 'X';
         gameWon = false;
         moveHistory = new Stack<>();
+        playerXWins = 0;
+        playerOWins = 0;
     }
 
     private void initializeGUI() {
@@ -74,11 +77,16 @@ public class GomokuGame extends JFrame {
                         if (winningLine != null) {
                             gameWon = true;
                             highlightWinningButtons(winningLine);
-                            JOptionPane.showMessageDialog(null, currentPlayer + " wins!");
+                            if (currentPlayer == 'X') {
+                                playerXWins++;
+                            } else {
+                                playerOWins++;
+                            }
+                            JOptionPane.showMessageDialog(null, currentPlayer + " wins!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
                             resetBoard();
                         } else if (isBoardFull()) {
                             gameWon = true;
-                            JOptionPane.showMessageDialog(null, "平手!");
+                            JOptionPane.showMessageDialog(null, "平手!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
                             resetBoard();
                         } else {
                             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
