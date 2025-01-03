@@ -17,6 +17,7 @@ public class GomokuGame extends JFrame {
     private Stack<Point> moveHistory;
     private int playerXWins;
     private int playerOWins;
+    private static final int WINNING_GAMES = 3; // 設定贏的局數
 
     public GomokuGame() {
         initializeGame();
@@ -82,8 +83,15 @@ public class GomokuGame extends JFrame {
                             } else {
                                 playerOWins++;
                             }
-                            JOptionPane.showMessageDialog(null, currentPlayer + " wins!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
-                            resetBoard();
+
+                            if (playerXWins == WINNING_GAMES || playerOWins == WINNING_GAMES) {
+                                JOptionPane.showMessageDialog(null, currentPlayer + " wins the game!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
+                                resetGame();
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(null, currentPlayer + " wins this round!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
+                                resetBoard();
+                            }
                         } else if (isBoardFull()) {
                             gameWon = true;
                             JOptionPane.showMessageDialog(null, "平手!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
@@ -250,6 +258,13 @@ public class GomokuGame extends JFrame {
         gameWon = false;
         moveHistory.clear();
         statusBar.setText("Current Turn: " + currentPlayer);
+    }
+
+    private void resetGame() {
+        resetBoard();
+        playerXWins = 0;
+        playerOWins = 0;
+        JOptionPane.showMessageDialog(null, "遊戲結束! 請重新開始新的一局。");
     }
 
     public static void main(String[] args) {
