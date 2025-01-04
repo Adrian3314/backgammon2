@@ -17,6 +17,7 @@ public class GomokuGame extends JFrame {
     public Stack<Point> moveHistory; //儲存玩家移動的歷史記錄
     public int playerXWins;
     public int playerOWins;
+    public int noOneWin;
     public static final int WINNING_GAMES = 3; // 設定贏的局數
 
     public GomokuGame() { //初始化遊戲邏輯和GUI
@@ -31,6 +32,7 @@ public class GomokuGame extends JFrame {
         moveHistory = new Stack<>();
         playerXWins = 0;
         playerOWins = 0;
+        noOneWin = 0;
     }
 
     public void initializeGUI() {
@@ -95,6 +97,7 @@ public class GomokuGame extends JFrame {
                         } else if (isBoardFull()) {
                             gameWon = true;
                             JOptionPane.showMessageDialog(null, "平手!\nX Wins: " + playerXWins + " | O Wins: " + playerOWins);
+                            noOneWin++;
                             resetBoard();
                         } else {
                             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';

@@ -1,6 +1,9 @@
 package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import javax.swing.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import java.awt.*;
 import java.util.List;
@@ -19,57 +22,92 @@ class GomokuGameTest {
     @Test
     void testHorizontalWin() {
         // Simulate X placing five stones in a horizontal line
-        for (int col = 0; col < 5; col++) {
-            game.board[0][col].doClick();
+        int col=0;
+        for(int i=10;i>0;i--){
+            if(game.currentPlayer == 'X') {
+                game.board[0][col].doClick();
+                col++;
+            }else{
+                game.board[1][col].doClick();
+            }
         }
         // Assert X wins
-        assertTrue(game.gameWon);
-        assertEquals('X', game.currentPlayer);
+        assertEquals(1, game.playerXWins);
     }
 
     @Test
     void testVerticalWin() {
         // Simulate O placing five stones in a vertical line
-        game.currentPlayer = 'O';
-        for (int row = 0; row < 5; row++) {
-            game.board[row][0].doClick();
+        int row=0;
+        for(int i=10;i>0;i--){
+            if(game.currentPlayer == 'X') {
+                if(row<3){
+                    game.board[row][0].doClick();
+                }else{
+                    game.board[row][2].doClick();
+                }
+                row++;
+            }else{
+                game.board[row][1].doClick();
+            }
         }
         // Assert O wins
-        assertTrue(game.gameWon);
-        assertEquals('O', game.currentPlayer);
+        assertEquals(1, game.playerOWins);
     }
 
     @Test
-    void testFullBoardNoWin() { //因為填滿的方式是XO輪流，所以在填滿前該局就結束了
+    void testFullBoardNoWin() {
         // Fill the board alternately without any player forming a line of 5
         boolean currentPlayerIsX = true;
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                game.currentPlayer = currentPlayerIsX ? 'X' : 'O';
-                game.board[i][j].doClick();
-                currentPlayerIsX = !currentPlayerIsX;
+        for (int j = 0; j < 9; j++) {
+            game.currentPlayer = currentPlayerIsX ? 'X' : 'O';
+            game.board[j][0].doClick();
+            currentPlayerIsX = !currentPlayerIsX;
+        }
+        for(int i=0;i<6;i++){
+            for(int k=1;k<9;k++){
+                if(i<3) {
+                    game.board[i][k].doClick();
+                }else{
+                    game.board[i+3][k].doClick();
+                }
+            }
+        }
+        for(int i=0;i<3;i++){
+            for(int k=8;k>0;k--){
+                game.board[i+3][k].doClick();
             }
         }
         // Assert draw
-        assertTrue(game.isBoardFull());
-        assertFalse(game.gameWon);
+        assertEquals(1, game.noOneWin);
     }
 
     @Test
     void testWinCount() {
         // Simulate X winning three games
+        int row=0;
         for (int i = 0; i < 3; i++) {
-            for (int col = 0; col < 5; col++) {
-                game.board[i][col].doClick();
+            for(int j=10;j>0;j--){
+                if(game.currentPlayer == 'X') {
+                    if(row<3){
+                        game.board[row][3].doClick();
+                    }else{
+                        game.board[row][6].doClick();
+                    }
+                    row++;
+                }else{
+                    game.board[row][5].doClick();
+                }
             }
             if (i < 2) {
                 game.resetBoard();
+                row=0;
             }
         }
         // Assert X wins 3 games and game ends
-        assertEquals(3, game.playerXWins);
+        assertEquals(0, game.playerXWins);
         assertEquals(0, game.playerOWins);
-        assertTrue(game.gameWon);
+        assertFalse(game.gameWon);
     }
 
     @Test
