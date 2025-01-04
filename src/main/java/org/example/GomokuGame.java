@@ -1,30 +1,30 @@
 package org.example;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.*; //Swing GUI
+import java.awt.*; //GUI中繪圖和布局功能
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyEvent; //按鍵按鈕
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class GomokuGame extends JFrame {
 
-    private JButton[][] board;
-    private char currentPlayer;
-    private boolean gameWon;
-    private JLabel statusBar;
-    private Stack<Point> moveHistory;
-    private int playerXWins;
-    private int playerOWins;
-    private static final int WINNING_GAMES = 3; // 設定贏的局數
+    public JButton[][] board; //棋盤
+    public char currentPlayer; //紀錄當前是XO
+    public boolean gameWon; //標記遊戲是否結束
+    public JLabel statusBar; //狀態列，顯示當前玩家資訊
+    public Stack<Point> moveHistory; //儲存玩家移動的歷史記錄
+    public int playerXWins;
+    public int playerOWins;
+    public static final int WINNING_GAMES = 3; // 設定贏的局數
 
-    public GomokuGame() {
+    public GomokuGame() { //初始化遊戲邏輯和GUI
         initializeGame();
         initializeGUI();
     }
 
-    private void initializeGame() {
+    public void initializeGame() {
         board = new JButton[9][9];
         currentPlayer = 'X';
         gameWon = false;
@@ -33,7 +33,7 @@ public class GomokuGame extends JFrame {
         playerOWins = 0;
     }
 
-    private void initializeGUI() {
+    public void initializeGUI() {
         setTitle("五子棋");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -42,7 +42,7 @@ public class GomokuGame extends JFrame {
         setJMenuBar(menuBar);
 
         JMenu optionsMenu = new JMenu("Options");
-        optionsMenu.setMnemonic(KeyEvent.VK_O);
+        optionsMenu.setMnemonic(KeyEvent.VK_O); //設置快捷鍵Alt+O
         menuBar.add(optionsMenu);
 
         JMenuItem resetItem = new JMenuItem("Reset");
@@ -70,7 +70,7 @@ public class GomokuGame extends JFrame {
                 int row = i;
                 int col = j;
                 board[i][j].addActionListener(e -> {
-                    if (!gameWon && board[row][col].getText().equals("")) {
+                    if (!gameWon && board[row][col].getText().isEmpty()) { //若位置為空，紀錄動作並設置XO
                         moveHistory.push(new Point(row, col));
                         board[row][col].setText(Character.toString(currentPlayer));
 
@@ -108,14 +108,14 @@ public class GomokuGame extends JFrame {
 
         add(boardPanel, BorderLayout.CENTER);
 
-        setSize(600, 700);
+        setSize(600, 600);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private void undoMove() {
+    public void undoMove() {
         if (!moveHistory.isEmpty()) {
-            Point lastMove = moveHistory.pop();
+            Point lastMove = moveHistory.pop(); //從堆疊取出最後一次移動的座標
             int row = (int) lastMove.getX();
             int col = (int) lastMove.getY();
             board[row][col].setText("");
@@ -126,7 +126,7 @@ public class GomokuGame extends JFrame {
         }
     }
 
-    private void highlightWinningButtons(List<Point> winningLine) {
+    public void highlightWinningButtons(List<Point> winningLine) {
         for (Point point : winningLine) {
             int i = point.x;
             int j = point.y;
@@ -134,23 +134,23 @@ public class GomokuGame extends JFrame {
         }
     }
 
-    private List<Point> checkWin(int row, int col) {
-        List<Point> winningLine = checkRow(row);
+    public List<Point> checkWin(int row, int col) {
+        List<Point> winningLine = checkRow(row); //橫列
         if (winningLine != null) return winningLine;
 
-        winningLine = checkColumn(col);
+        winningLine = checkColumn(col); //直列
         if (winningLine != null) return winningLine;
 
-        winningLine = checkDiagonal(row, col);
+        winningLine = checkDiagonal(row, col); //對角線
         if (winningLine != null) return winningLine;
 
-        winningLine = checkAntiDiagonal(row, col);
+        winningLine = checkAntiDiagonal(row, col); //反對角線
         if (winningLine != null) return winningLine;
 
         return null;
     }
 
-    private List<Point> checkRow(int row) {
+    public List<Point> checkRow(int row) {
         int count = 0;
         List<Point> winningLine = new ArrayList<>();
 
@@ -167,7 +167,7 @@ public class GomokuGame extends JFrame {
         return null;
     }
 
-    private List<Point> checkColumn(int col) {
+    public List<Point> checkColumn(int col) {
         int count = 0;
         List<Point> winningLine = new ArrayList<>();
 
@@ -184,7 +184,7 @@ public class GomokuGame extends JFrame {
         return null;
     }
 
-    private List<Point> checkDiagonal(int row, int col) {
+    public List<Point> checkDiagonal(int row, int col) {
         int count = 1;
         List<Point> winningLine = new ArrayList<>();
         winningLine.add(new Point(row, col));
@@ -210,7 +210,7 @@ public class GomokuGame extends JFrame {
         return count >= 5 ? winningLine : null;
     }
 
-    private List<Point> checkAntiDiagonal(int row, int col) {
+    public List<Point> checkAntiDiagonal(int row, int col) {
         int count = 1;
         List<Point> winningLine = new ArrayList<>();
         winningLine.add(new Point(row, col));
@@ -236,10 +236,10 @@ public class GomokuGame extends JFrame {
         return count >= 5 ? winningLine : null;
     }
 
-    private boolean isBoardFull() {
+    public boolean isBoardFull() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (board[i][j].getText().equals("")) {
+                if (board[i][j].getText().isEmpty()) {
                     return false;
                 }
             }
@@ -247,7 +247,7 @@ public class GomokuGame extends JFrame {
         return true;
     }
 
-    private void resetBoard() {
+    public void resetBoard() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 board[i][j].setText("");
@@ -260,7 +260,7 @@ public class GomokuGame extends JFrame {
         statusBar.setText("Current Turn: " + currentPlayer);
     }
 
-    private void resetGame() {
+    public void resetGame() {
         resetBoard();
         playerXWins = 0;
         playerOWins = 0;
