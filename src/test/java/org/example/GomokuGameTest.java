@@ -2,11 +2,6 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import javax.swing.*;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import java.awt.*;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +13,6 @@ class GomokuGameTest {
     void setUp() {
         game = new GomokuGame();
     }
-
     @Test
     void testHorizontalWin() {
         // Simulate X placing five stones in a horizontal line
@@ -124,6 +118,7 @@ class GomokuGameTest {
                 game.resetBoard();
                 row=0;
             }
+
         }
         // Assert X wins 3 games and game ends
         assertEquals(0, game.playerXWins);
@@ -132,11 +127,26 @@ class GomokuGameTest {
     }
 
     @Test
+    void testUndoMove() {
+        char lastPlayer ='X';
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                game.board[i][j].doClick();
+                if (i == 3 - 1 && j == 4 - 2) {
+                    lastPlayer = game.currentPlayer;
+                }
+            }
+        }
+        game.undoMove();
+        assertEquals("", game.board[3][4].getText());
+        assertEquals(lastPlayer, game.currentPlayer);
+        assertFalse(game.gameWon);
+    }
+
+    @Test
     void testIllegalMove() {
         // Simulate X placing a stone
         game.board[0][0].doClick();
-        // Attempt O placing a stone in the same spot
-        game.currentPlayer = 'O';
         game.board[0][0].doClick();
         // Assert the spot is not overwritten
         assertEquals("X", game.board[0][0].getText());
@@ -150,4 +160,5 @@ class GomokuGameTest {
         game.board[0][1].doClick();
         assertEquals('X', game.currentPlayer); // Turn switched back to X
     }
+
 }
