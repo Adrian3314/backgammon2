@@ -56,6 +56,27 @@ class GomokuGameTest {
     }
 
     @Test
+    void testDiagonalWin() {
+        // Simulate O placing five stones in a vertical line
+        int row=0;
+        for(int i=10;i>0;i--){
+            if(game.currentPlayer == 'X') {
+                if(row<3){
+                    game.board[row][0].doClick();
+                }else{
+                    game.board[row][2].doClick();
+                }
+                row++;
+            }else{
+                game.board[row][row].doClick();
+            }
+        }
+        // Assert O wins
+        assertEquals(1, game.playerOWins);
+    }
+
+
+    @Test
     void testFullBoardNoWin() {
         // Fill the board alternately without any player forming a line of 5
         boolean currentPlayerIsX = true;
