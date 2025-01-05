@@ -2,7 +2,6 @@ package org.example;
 
 import javax.swing.*; //Swing GUI
 import java.awt.*; //GUI中繪圖和布局功能
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent; //按鍵按鈕
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,6 @@
 package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GomokuGameTest {
@@ -160,5 +158,4 @@ class GomokuGameTest {
         game.board[0][1].doClick();
         assertEquals('X', game.currentPlayer); // Turn switched back to X
     }
-
 }
