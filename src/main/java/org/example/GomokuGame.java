@@ -23,9 +23,9 @@ public class GomokuGame extends JFrame {
     public int playerOWins;
     public int noOneWin;
     public static final int WINNING_GAMES = 3; // 設定贏的局數
-    private Timer timer; // 倒數計時器
-    private int timeRemaining; // 剩餘時間
-    private JButton hintedButton = null; // 用於記錄當前被提示的按鈕
+    public Timer timer; // 倒數計時器
+    public int timeRemaining; // 剩餘時間
+    public JButton hintedButton = null; // 用於記錄當前被提示的按鈕
 
 
     public GomokuGame() { //初始化遊戲邏輯和GUI

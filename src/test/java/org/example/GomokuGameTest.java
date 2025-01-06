@@ -1,7 +1,14 @@
 package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
 
 class GomokuGameTest {
 
@@ -11,6 +18,12 @@ class GomokuGameTest {
     void setUp() {
         game = new GomokuGame();
     }
+
+    @AfterEach
+    void tearDown() {
+        game.dispose();
+    }
+
     @Test
     void testHorizontalWin() {
         // Simulate X placing five stones in a horizontal line
@@ -158,4 +171,61 @@ class GomokuGameTest {
         game.board[0][1].doClick();
         assertEquals('X', game.currentPlayer); // Turn switched back to X
     }
+    @Test
+    void testResetBoard() {
+        // Simulate some moves
+        game.board[0][0].doClick();
+        game.board[0][1].doClick();
+        game.board[0][2].doClick();
+        // Reset the board
+        game.resetBoard();
+        // Assert the board is empty and game state is reset
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                assertEquals("", game.board[i][j].getText());
+            }
+        }
+        assertEquals('X', game.currentPlayer);
+        assertFalse(game.gameWon);
+        assertEquals(0, game.moveHistory.size());
+    }
+
+    @Test
+    void testResetGame() {
+        // Simulate some moves and wins
+        game.board[0][0].doClick();
+        game.board[0][1].doClick();
+        game.board[0][2].doClick();
+        game.board[0][3].doClick();
+        game.board[0][4].doClick();
+        game.playerXWins = 3;
+        // Reset the game
+        game.resetGame();
+        // Assert the game state is reset
+        assertEquals(0, game.playerXWins);
+        assertEquals(0, game.playerOWins);
+        assertEquals(0, game.noOneWin);
+        assertEquals('X', game.currentPlayer);
+        assertFalse(game.gameWon);
+    }
+
+    @Test
+    void testTimer() throws InterruptedException {
+        // Simulate a move to start the timer
+        game.board[0][0].doClick();
+        // Wait for the timer to run out
+        Thread.sleep(16000);
+        // Assert the turn has switched
+        assertEquals('O', game.currentPlayer);
+    }
+
+    @Test
+    void testHint() {
+        // Simulate a hint request
+        Point hint = game.suggestMove();
+        assertNotNull(hint);
+        assertTrue(hint.x >= 0 && hint.x < 9);
+        assertTrue(hint.y >= 0 && hint.y < 9);
+    }
 }
+
