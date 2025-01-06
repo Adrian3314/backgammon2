@@ -111,10 +111,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version>
+                <version>3.26.0</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>rulesets/java/basic.xml</ruleset>
+                        <ruleset>src/main/resources/pmd/ruleset.xml</ruleset>
                     </rulesets>
                     <failOnViolation>false</failOnViolation>
                 </configuration>
