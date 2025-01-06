@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent; //按鍵按鈕
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.Collections;
 
 public class GomokuGame extends JFrame {
 
@@ -24,7 +25,7 @@ public class GomokuGame extends JFrame {
         initializeGUI();
     }
 
-    public void initializeGame() {
+    public final void initializeGame() {
         board = new JButton[9][9];
         currentPlayer = 'X';
         gameWon = false;
@@ -34,13 +35,13 @@ public class GomokuGame extends JFrame {
         noOneWin = 0;
     }
 
-    public void initializeGUI() {
-        setTitle("五子棋");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+    public final void initializeGUI() {
+        super.setTitle("五子棋");
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setLayout(new BorderLayout());
 
         JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
+        super.setJMenuBar(menuBar);
 
         JMenu optionsMenu = new JMenu("Options");
         optionsMenu.setMnemonic(KeyEvent.VK_O); //設置快捷鍵Alt+O
@@ -76,7 +77,7 @@ public class GomokuGame extends JFrame {
                         board[row][col].setText(Character.toString(currentPlayer));
 
                         List<Point> winningLine = checkWin(row, col);
-                        if (winningLine != null) {
+                        if (!winningLine.isEmpty()) { // 這裡原本是 if (winningLine != null)
                             gameWon = true;
                             highlightWinningButtons(winningLine);
                             if (currentPlayer == 'X') {
@@ -110,7 +111,7 @@ public class GomokuGame extends JFrame {
 
         add(boardPanel, BorderLayout.CENTER);
 
-        setSize(600, 600);
+        setSize(750, 750);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -138,18 +139,18 @@ public class GomokuGame extends JFrame {
 
     public List<Point> checkWin(int row, int col) {
         List<Point> winningLine = checkRow(row); //橫列
-        if (winningLine != null) return winningLine;
+        if (!winningLine.isEmpty()) return winningLine;
 
         winningLine = checkColumn(col); //直列
-        if (winningLine != null) return winningLine;
+        if (!winningLine.isEmpty()) return winningLine;
 
         winningLine = checkDiagonal(row, col); //對角線
-        if (winningLine != null) return winningLine;
+        if (!winningLine.isEmpty()) return winningLine;
 
         winningLine = checkAntiDiagonal(row, col); //反對角線
-        if (winningLine != null) return winningLine;
+        if (!winningLine.isEmpty()) return winningLine;
 
-        return null;
+        return Collections.emptyList();
     }
 
     public List<Point> checkRow(int row) {
@@ -166,7 +167,7 @@ public class GomokuGame extends JFrame {
                 winningLine.clear();
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<Point> checkColumn(int col) {
@@ -183,7 +184,7 @@ public class GomokuGame extends JFrame {
                 winningLine.clear();
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<Point> checkDiagonal(int row, int col) {
@@ -209,7 +210,7 @@ public class GomokuGame extends JFrame {
             j++;
         }
 
-        return count >= 5 ? winningLine : null;
+        return count >= 5 ? winningLine : Collections.emptyList();
     }
 
     public List<Point> checkAntiDiagonal(int row, int col) {
@@ -235,7 +236,7 @@ public class GomokuGame extends JFrame {
             j--;
         }
 
-        return count >= 5 ? winningLine : null;
+        return count >= 5 ? winningLine : Collections.emptyList();
     }
 
     public boolean isBoardFull() {
