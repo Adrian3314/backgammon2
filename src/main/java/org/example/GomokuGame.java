@@ -351,7 +351,6 @@ public class GomokuGame extends JFrame {
         scoreLabel.setText("Score - X: " + playerXWins + " | O: " + playerOWins + " | Draws: " + noOneWin);
     }
 
-    // 添加到 GomokuGame 類中
     public Point suggestMove() {
         int bestScore = Integer.MIN_VALUE;
         Point bestMove = null;
@@ -381,7 +380,7 @@ public class GomokuGame extends JFrame {
         int score = 0;
 
         for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+            for (int j = 0; j < 9;j++) {
                 if (board[i][j].getText().equals(Character.toString(currentPlayer))) {
                     score += evaluatePosition(i, j, currentPlayer);
                 } else if (board[i][j].getText().equals(Character.toString((currentPlayer == 'X') ? 'O' : 'X'))) {

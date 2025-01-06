@@ -1,6 +1,9 @@
 package org.example;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import javax.swing.*;
 
@@ -9,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // 使用順序控制
 class GomokuGameTest {
 
     private GomokuGame game;
@@ -22,9 +25,13 @@ class GomokuGameTest {
     @AfterEach
     void tearDown() {
         game.dispose();
+        if (game.timer != null) {
+            game.timer.cancel();
+        }
     }
 
     @Test
+    @Order(1)
     void testHorizontalWin() {
         // Simulate X placing five stones in a horizontal line
         int col=0;
@@ -41,6 +48,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(2)
     void testVerticalWin() {
         // Simulate O placing five stones in a vertical line
         int row=0;
@@ -61,6 +69,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(3)
     void testDiagonalWin() {
         // Simulate O placing five stones in a vertical line
         int row=0;
@@ -82,6 +91,7 @@ class GomokuGameTest {
 
 
     @Test
+    @Order(4)
     void testFullBoardNoWin() {
         // Fill the board alternately without any player forming a line of 5
         boolean currentPlayerIsX = true;
@@ -109,6 +119,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(5)
     void testWinCount() {
         // Simulate X winning three games
         int row=0;
@@ -138,6 +149,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(6)
     void testUndoMove() {
         char lastPlayer ='X';
         for (int i = 0; i < 3; i++) {
@@ -155,6 +167,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(7)
     void testIllegalMove() {
         // Simulate X placing a stone
         game.board[0][0].doClick();
@@ -164,6 +177,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(15)
     void testTurnOrder() {
         // Simulate X and O taking turns
         game.board[0][0].doClick();
@@ -172,6 +186,7 @@ class GomokuGameTest {
         assertEquals('X', game.currentPlayer); // Turn switched back to X
     }
     @Test
+    @Order(8)
     void testResetBoard() {
         // Simulate some moves
         game.board[0][0].doClick();
@@ -191,6 +206,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(9)
     void testResetGame() {
         // Simulate some moves and wins
         game.board[0][0].doClick();
@@ -210,6 +226,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(16)
     void testTimer() throws InterruptedException {
         // Simulate a move to start the timer
         game.board[0][0].doClick();
@@ -220,6 +237,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(11)
     void testHint() {
         // Simulate a hint request
         Point hint = game.suggestMove();
@@ -228,6 +246,7 @@ class GomokuGameTest {
         assertTrue(hint.y >= 0 && hint.y < 9);
     }
     @Test
+    @Order(12)
     void testCountContinuousHorizontal() {
         // Simulate placing stones in a horizontal line
         for (int i = 0; i < 5; i++) {
@@ -238,6 +257,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(13)
     void testCountContinuousVertical() {
         // Simulate placing stones in a vertical line
         for (int i = 0; i < 5; i++) {
@@ -248,6 +268,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(14)
     void testCountContinuousDiagonal() {
         // Simulate placing stones in a diagonal line
         for (int i = 0; i < 5; i++) {
@@ -258,6 +279,7 @@ class GomokuGameTest {
     }
 
     @Test
+    @Order(10)
     void testCountContinuousAntiDiagonal() {
         // Simulate placing stones in an anti-diagonal line
         for (int i = 0; i < 5; i++) {
