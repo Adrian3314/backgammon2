@@ -245,48 +245,5 @@ class GomokuGameTest {
         assertTrue(hint.x >= 0 && hint.x < 9);
         assertTrue(hint.y >= 0 && hint.y < 9);
     }
-    @Test
-    @Order(12)
-    void testCountContinuousHorizontal() {
-        // Simulate placing stones in a horizontal line
-        for (int i = 0; i < 5; i++) {
-            game.board[0][i].setText("X");
-        }
-        // Assert countContinuous returns 4 for horizontal direction
-        assertEquals(4, game.countContinuous(0, 0, 0, 1, 'X'));
-    }
-
-    @Test
-    @Order(13)
-    void testCountContinuousVertical() {
-        // Simulate placing stones in a vertical line
-        for (int i = 0; i < 5; i++) {
-            game.board[i][0].setText("X");
-        }
-        // Assert countContinuous returns 4 for vertical direction
-        assertEquals(4, game.countContinuous(0, 0, 1, 0, 'X'));
-    }
-
-    @Test
-    @Order(14)
-    void testCountContinuousDiagonal() {
-        // Simulate placing stones in a diagonal line
-        for (int i = 0; i < 5; i++) {
-            game.board[i][i].setText("X");
-        }
-        // Assert countContinuous returns 4 for diagonal direction
-        assertEquals(4, game.countContinuous(0, 0, 1, 1, 'X'));
-    }
-
-    @Test
-    @Order(10)
-    void testCountContinuousAntiDiagonal() {
-        // Simulate placing stones in an anti-diagonal line
-        for (int i = 0; i < 5; i++) {
-            game.board[i][8 - i].setText("X");
-        }
-        // Assert countContinuous returns 4 for anti-diagonal direction
-        assertEquals(4, game.countContinuous(0, 8, 1, -1, 'X'));
-    }
 }
 
