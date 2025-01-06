@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import javax.swing.*;
+
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;

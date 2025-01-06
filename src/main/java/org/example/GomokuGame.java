@@ -3,6 +3,8 @@ package org.example;
 import javax.swing.*; //Swing GUI
 import java.awt.*; //GUI中繪圖和布局功能
 import java.awt.event.KeyEvent; //按鍵按鈕
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -98,7 +100,7 @@ public class GomokuGame extends JFrame {
         timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusPanel.add(timerLabel);
 
-        scoreLabel = new JLabel("Score - X: 0 | O: 0");
+        scoreLabel = new JLabel("Score - X: 0 | O: 0 | Draws: 0");
         scoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusPanel.add(scoreLabel);
@@ -160,11 +162,31 @@ public class GomokuGame extends JFrame {
 
         add(boardPanel, BorderLayout.CENTER);
 
-        setSize(750, 750);
+        setSize(850, 850);
         setLocationRelativeTo(null);
         setVisible(true);
 
         startTimer();
+        // Add a window listener to stop the timer when a dialog is shown
+        Toolkit.getDefaultToolkit().getSystemEventQueue().push(new EventQueue() {
+            @Override
+            protected void dispatchEvent(AWTEvent event) {
+            super.dispatchEvent(event);
+            if (event instanceof WindowEvent) {
+                WindowEvent windowEvent = (WindowEvent) event;
+                if (windowEvent.getID() == WindowEvent.WINDOW_OPENED && windowEvent.getWindow() instanceof JDialog) {
+                timer.cancel();
+                ((JDialog) windowEvent.getWindow()).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                    timer = new Timer();
+                    startTimer();
+                    }
+                });
+                }
+            }
+            }
+        });
     }
 
     public void startTimer() {
